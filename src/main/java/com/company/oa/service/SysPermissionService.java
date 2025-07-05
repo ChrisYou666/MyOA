@@ -22,4 +22,5 @@ public interface SysPermissionService {
     // 细粒度：角色-权限
     List<Long> getRolePermissionIds(Long roleId);
     void assignPermissionsToRole(Long roleId, List<Long> permissionIds);
+    List<String> getPermissionCodesByUser(Long userId);
 }

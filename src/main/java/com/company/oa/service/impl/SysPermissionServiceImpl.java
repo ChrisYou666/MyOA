@@ -11,6 +11,8 @@ import com.company.oa.service.SysPermissionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.BeanUtils;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +24,18 @@ public class SysPermissionServiceImpl
     private final SysUserRoleMapper userRoleMapper;
     private final SysRoleMenuMapper roleMenuMapper;
     private final SysRolePermissionMapper rolePermMapper;
+    private final SysPermissionMapper sysPermissionMapper;
 
     public SysPermissionServiceImpl(
             SysUserRoleMapper ur,
             SysRoleMenuMapper rm,
-            SysRolePermissionMapper rp
+            SysRolePermissionMapper rp,
+            SysPermissionMapper sysPermissionMapper
     ) {
         this.userRoleMapper = ur;
         this.roleMenuMapper = rm;
         this.rolePermMapper = rp;
+        this.sysPermissionMapper = sysPermissionMapper;
     }
 
     // 粗粒度
@@ -123,5 +128,40 @@ public class SysPermissionServiceImpl
             rp.setRoleId(roleId); rp.setPermissionId(pid);
             rolePermMapper.insert(rp);
         });
+    }
+
+    @Override
+    public List<String> getPermissionCodesByUser(Long userId) {
+        // 1) 查出用户所有角色 ID
+        List<Long> roleIds = userRoleMapper.selectList(
+                        new QueryWrapper<SysUserRole>().eq("user_id", userId)
+                ).stream()
+                .map(SysUserRole::getRoleId)
+                .distinct()
+                .collect(Collectors.toList());
+        if (roleIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 2) 根据角色 ID 查角色-权限关联，拿到所有 permissionId
+        List<Long> permIds = rolePermMapper.selectList(
+                        new QueryWrapper<SysRolePermission>()
+                                .in("role_id", roleIds)
+                ).stream()
+                .map(SysRolePermission::getPermissionId)
+                .distinct()
+                .collect(Collectors.toList());
+        if (permIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 3) 根据 permissionId 查出所有 SysPermission 实体，并返回 code 列表
+        return sysPermissionMapper.selectList(
+                        new QueryWrapper<SysPermission>()
+                                .in("id", permIds)
+                                .eq("status", 1)    // 只返回启用的权限
+                ).stream()
+                .map(SysPermission::getCode)
+                .collect(Collectors.toList());
     }
 }
