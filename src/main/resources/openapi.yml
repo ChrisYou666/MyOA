@@ -338,4 +338,82 @@ paths:
         - name: id; in: path; required: true; schema: { type: integer }
       responses:
         "200": { description: OK }
+paths:
+  /api/permissions/user/{userId}/roles:
+    get:
+      summary: 获取用户已分配角色ID列表
+      parameters:
+        - name: userId; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK; content: { application/json: { schema: { type: array, items: { type: integer } } } } }
+    post:
+      summary: 为用户分配角色
+      parameters:
+        - name: userId; in: path; required: true; schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { type: integer }
+      responses:
+        "200": { description: OK }
+
+  /api/permissions/role/{roleId}/menus:
+    get:
+      summary: 获取角色已分配菜单ID列表
+      parameters:
+        - name: roleId; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK; content: { application/json: { schema: { type: array, items: { type: integer } } } } }
+    post:
+      summary: 为角色分配菜单
+      parameters:
+        - name: roleId; in: path; required: true; schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { type: integer }
+      responses:
+        "200": { description: OK }
+components:
+  schemas:
+    SysPermissionDTO: { type: object, required:[code,name,menuId,apiPath,method],
+                        properties:
+                          code:{type:string}, name:{type:string},
+      menuId:{type:integer,format:int64},
+      apiPath:{type:string}, method:{type:string},
+      status:{type:integer} }
+
+    SysPermissionVO: { type: object,
+                       properties:
+                         id:{type:integer,format:int64},
+                       code:{type:string}, name:{type:string},
+                       menuId:{type:integer,format:int64},
+                       apiPath:{type:string}, method:{type:string},
+                       status:{type:integer},
+                       createTime:{type:string,format:date-time},
+                       updateTime:{type:string,format:date-time} }
+
+paths:
+  /api/permissions/user/{userId}/roles:
+    get: { summary: 获取用户角色IDs }
+    post:{ summary: 设置用户角色IDs }
+  /api/permissions/role/{roleId}/menus:
+    get: { summary: 获取角色菜单IDs }
+    post:{ summary: 设置角色菜单IDs }
+  /api/permissions:
+    get: { summary: 分页查询权限 }
+    post:{ summary: 创建权限 }
+  /api/permissions/{id}:
+    get:    { summary: 查询单个权限 }
+    put:    { summary: 更新权限 }
+    delete: { summary: 删除权限 }
+  /api/permissions/role/{roleId}:
+    get: { summary: 获取角色权限IDs }
+    post:{ summary: 设置角色权限IDs }
 
