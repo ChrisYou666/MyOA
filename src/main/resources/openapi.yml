@@ -1,0 +1,44 @@
+components:
+  schemas:
+    SysUserDTO:
+      type: object
+      properties:
+        username: {type: string}
+        password: {type: string}
+        realName: {type: string}
+        email: {type: string}
+        mobile: {type: string}
+        status: {type: integer}
+        deptId: {type: integer}
+    SysUserVO:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        username: {type: string}
+        realName: {type: string}
+        email: {type: string}
+        mobile: {type: string}
+        status: {type: integer}
+        deptName: {type: string}
+        createTime: {type: string, format: date-time}
+
+paths:
+  /api/users:
+    get:
+      summary: 获取用户列表（分页）
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/R'
+    post:
+      summary: 新增用户
+  /api/users/{id}:
+    get:
+      summary: 获取单个用户
+    put:
+      summary: 更新用户
+    delete:
+      summary: 删除用户

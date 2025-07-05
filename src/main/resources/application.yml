@@ -1,37 +1,37 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/oa?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/oa_dev?useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-  profiles:
-    active: ""   # 清空或删除此行，不使用任何 profile
-  data:
-    redis:
-      host: localhost
-      port: 6379
+
+  # 关闭所有 SQL 初始化与依赖分析
+  sql:
+    init:
+      mode: never
+
 server:
   port: 8080
+
 management:
+  metrics:
+    enable:
+      rabbit: false
   health:
     rabbit:
       enabled: false
     redis:
-      enabled: false   # 如果你也没启动 Redis，一并禁用
+      enabled: false
     db:
-      enabled: true    # 保留数据库检查
+      enabled: true
+
 logging:
   level:
-    root: INFO                  # 根级别，INFO+ 都会打印
-    org.springframework: WARN    # Spring 框架只 WARN+，屏蔽 INFO、DEBUG
-    org.hibernate: WARN         # 如果使用 JPA，也可以屏蔽 Hibernate INFO
-    com.zaxxer.hikari: WARN     # HikariCP 只 WARN+，屏蔽连接池 INFO
-    org.springframework.amqp: WARN      # RabbitMQ 客户端只 WARN+
-    org.springframework.data.redis: WARN  # Redis 客户端只 WARN+
-    com.baomidou.mybatisplus: WARN      # MyBatis-Plus 只 WARN+
-    com.company.oa: INFO         # 你的业务代码保持 INFO 级别
+    root: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+    com.zaxxer.hikari: WARN
+    org.springframework.amqp: WARN
+    org.springframework.data.redis: WARN
+    com.baomidou.mybatisplus: WARN
+    com.company.oa: INFO
