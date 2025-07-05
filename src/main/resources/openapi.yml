@@ -210,4 +210,63 @@ paths:
       responses:
         "200":
           description: OK
+components:
+  schemas:
+    SysRoleDTO:
+      type: object
+      required: [name, code]
+      properties:
+        name: { type: string }
+        code: { type: string }
+        status: { type: integer }
+    SysRoleVO:
+      type: object
+      properties:
+        id: { type: integer, format: int64 }
+        name: { type: string }
+        code: { type: string }
+        status: { type: integer }
+        createTime: { type: string, format: date-time }
+        updateTime: { type: string, format: date-time }
+
+paths:
+  /api/roles:
+    get:
+      summary: 分页查询角色
+      parameters:
+        - name: page; in: query; schema: { type: integer }
+        - name: size; in: query; schema: { type: integer }
+      responses:
+        "200": { description: OK }
+    post:
+      summary: 新增角色
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SysRoleDTO' }
+      responses:
+        "200": { description: OK }
+  /api/roles/{id}:
+    get:
+      summary: 按 ID 查询角色
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK }
+    put:
+      summary: 更新角色
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SysRoleDTO' }
+      responses:
+        "200": { description: OK }
+    delete:
+      summary: 删除角色
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK }
 
