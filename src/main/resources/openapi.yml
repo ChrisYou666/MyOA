@@ -103,3 +103,111 @@ paths:
         - name: id; in: path; schema: {type: integer}; required: true
       responses:
         "200": {description: OK}
+components:
+  schemas:
+    SysPostDTO:
+      type: object
+      required:
+        - name
+        - code
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+    SysPostVO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+        createTime:
+          type: string
+          format: date-time
+        updateTime:
+          type: string
+          format: date-time
+
+paths:
+  /api/posts:
+    get:
+      summary: 分页查询岗位
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: size
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: 新增岗位
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysPostDTO'
+      responses:
+        "200":
+          description: OK
+  /api/posts/{id}:
+    get:
+      summary: 根据 ID 查询岗位
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+    put:
+      summary: 更新岗位
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysPostDTO'
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: 删除岗位
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+
