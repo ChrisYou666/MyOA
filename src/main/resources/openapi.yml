@@ -42,3 +42,64 @@ paths:
       summary: 更新用户
     delete:
       summary: 删除用户
+components:
+  schemas:
+    SysDeptDTO:
+      type: object
+      required: [name]
+      properties:
+        name: {type: string}
+        parentId: {type: integer, format: int64}
+        orderNum: {type: integer}
+        status: {type: integer}
+    SysDeptVO:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        parentId: {type: integer, format: int64}
+        orderNum: {type: integer}
+        status: {type: integer}
+        createTime: {type: string, format: date-time}
+        updateTime: {type: string, format: date-time}
+
+paths:
+  /api/depts:
+    get:
+      summary: 分页获取部门列表
+      parameters:
+        - name: page; in: query; schema: {type: integer}; required: false
+        - name: size; in: query; schema: {type: integer}; required: false
+      responses:
+        "200": {description: OK}
+    post:
+      summary: 新增部门
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SysDeptDTO' }
+      responses:
+        "200": {description: OK}
+  /api/depts/{id}:
+    get:
+      summary: 根据 ID 查询部门
+      parameters:
+        - name: id; in: path; schema: {type: integer, format: int64}; required: true
+      responses:
+        "200": {description: OK}
+    put:
+      summary: 更新部门
+      parameters:
+        - name: id; in: path; required: true; schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SysDeptDTO' }
+      responses:
+        "200": {description: OK}
+    delete:
+      summary: 删除部门
+      parameters:
+        - name: id; in: path; schema: {type: integer}; required: true
+      responses:
+        "200": {description: OK}
