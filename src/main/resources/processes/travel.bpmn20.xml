@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="TravelProcess">
+
+    <process id="travelProcess" name="出差审批流程" isExecutable="true">
+        <startEvent id="start" name="开始申请"/>
+        <userTask id="apply" name="填写出差申请" flowable:assignee="${initiator}"/>
+        <userTask id="approve" name="部门经理审批" flowable:assignee="${manager}"/>
+        <endEvent id="end" name="流程结束"/>
+
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="apply"/>
+        <sequenceFlow id="flow2" sourceRef="apply" targetRef="approve"/>
+        <sequenceFlow id="flow3" sourceRef="approve" targetRef="end"/>
+    </process>
+</definitions>

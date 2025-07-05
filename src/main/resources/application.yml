@@ -5,10 +5,20 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # 关闭所有 SQL 初始化与依赖分析
+  # 关闭所有 Spring Boot SQL 初始化
   sql:
     init:
       mode: never
+
+  # Flowable 引擎自动建表／更新
+  flowable:
+    database-schema-update: true
+    # 如果你想把流程数据和业务数据存同一库，用同一个 datasource
+    id-generator:
+      datasource:
+        url: jdbc:mysql://localhost:3306/oa_dev?useSSL=false&serverTimezone=UTC
+        username: root
+        password: 123456
 
 server:
   port: 8080
@@ -34,4 +44,10 @@ logging:
     org.springframework.amqp: WARN
     org.springframework.data.redis: WARN
     com.baomidou.mybatisplus: WARN
+    org.flowable: INFO    # Flowable 日志级别
     com.company.oa: INFO
+flowable:
+  # 关闭 Event Registry 功能
+  event-registry:
+    enabled: false
+    database-schema-update: false
