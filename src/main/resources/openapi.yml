@@ -269,4 +269,73 @@ paths:
         - name: id; in: path; required: true; schema: { type: integer }
       responses:
         "200": { description: OK }
+components:
+  schemas:
+    SysMenuDTO:
+      type: object
+      required: [name, path, parentId]
+      properties:
+        name:      { type: string }
+        path:      { type: string }
+        component: { type: string }
+        parentId:  { type: integer, format: int64 }
+        orderNum:  { type: integer }
+        status:    { type: integer }
+    SysMenuVO:
+      type: object
+      properties:
+        id:         { type: integer, format: int64 }
+        name:       { type: string }
+        path:       { type: string }
+        component:  { type: string }
+        parentId:   { type: integer, format: int64 }
+        orderNum:   { type: integer }
+        status:     { type: integer }
+        createTime: { type: string, format: date-time }
+        updateTime: { type: string, format: date-time }
+
+paths:
+  /api/menus:
+    get:
+      summary: 分页查询菜单
+      parameters:
+        - name: page; in: query; schema: { type: integer }
+        - name: size; in: query; schema: { type: integer }
+      responses:
+        "200": { description: OK }
+    post:
+      summary: 新增菜单
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysMenuDTO'
+      responses:
+        "200": { description: OK }
+  /api/menus/{id}:
+    get:
+      summary: 查询单个菜单
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK }
+    put:
+      summary: 更新菜单
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysMenuDTO'
+      responses:
+        "200": { description: OK }
+    delete:
+      summary: 删除菜单
+      parameters:
+        - name: id; in: path; required: true; schema: { type: integer }
+      responses:
+        "200": { description: OK }
 
