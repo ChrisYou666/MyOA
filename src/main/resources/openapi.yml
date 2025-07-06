@@ -416,4 +416,80 @@ paths:
   /api/permissions/role/{roleId}:
     get: { summary: 获取角色权限IDs }
     post:{ summary: 设置角色权限IDs }
+paths:
+  /api/schedule:
+    get:
+      summary: 分页查询排班
+      parameters:
+        - in: query; name: page; schema: {type: integer}
+        - in: query; name: size; schema: {type: integer}
+        - in: query; name: userId; schema: {type: integer}
+      responses: { '200': { description: OK } }
+    post:
+      summary: 新增排班
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ScheduleDTO' }
+      responses: { '200': { description: OK } }
+    put:
+      summary: 更新排班
+      parameters:
+        - in: path; name: id; schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ScheduleDTO' }
+      responses: { '200': { description: OK } }
+    delete:
+      summary: 删除排班
+      parameters:
+        - in: path; name: id; schema: {type: integer}
+      responses: { '200': { description: OK } }
+
+  /api/correction:
+    get:
+      summary: 分页查询补卡申请
+      parameters:
+        - in: query; name: page; schema: {type: integer}
+        - in: query; name: size; schema: {type: integer}
+        - in: query; name: userId; schema: {type: integer}
+      responses: { '200': { description: OK } }
+    post:
+      summary: 申请补卡
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CorrectionDTO' }
+      responses: { '200': { description: OK } }
+  /api/correction/{id}/approve:
+    post:
+      summary: 审批补卡申请
+      parameters:
+        - in: path; name: id; schema: {type: integer}
+        - in: query; name: approverId; schema: {type: integer}
+        - in: query; name: pass; schema: {type: boolean}
+      responses: { '200': { description: OK } }
+
+components:
+  schemas:
+    ScheduleDTO:
+      type: object
+      required: [userId,workDate,shiftCode,startTime,endTime]
+      properties:
+        userId:    { type: integer }
+        workDate:  { type: string, format: date }
+        shiftCode: { type: string }
+        startTime: { type: string, format: time }
+        endTime:   { type: string, format: time }
+        description:{ type: string }
+    CorrectionDTO:
+      type: object
+      required: [userId,applyDate,type,reason]
+      properties:
+        userId:    { type: integer }
+        applyDate: { type: string, format: date }
+        type:      { type: integer, description: '1上班卡；2下班卡' }
+        reason:    { type: string }
 
