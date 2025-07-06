@@ -492,4 +492,114 @@ components:
         applyDate: { type: string, format: date }
         type:      { type: integer, description: '1上班卡；2下班卡' }
         reason:    { type: string }
-
+openapi: 3.0.1
+info:
+  title: 文档管理 API
+  version: 1.0.0
+paths:
+  /api/documents:
+    post:
+      summary: 创建文档
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysDocumentDTO'
+      responses:
+        '200':
+          description: 文档ID
+          content:
+            application/json:
+              schema:
+                type: integer
+    get:
+      summary: 分页查询文档
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          default: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          default: 10
+      responses:
+        '200':
+          description: 文档列表
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current:
+                    type: integer
+                  size:
+                    type: integer
+                  total:
+                    type: integer
+                  records:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SysDocumentVO'
+  /api/documents/{id}:
+    put:
+      summary: 更新文档
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysDocumentDTO'
+      responses:
+        '200': { description: OK }
+    delete:
+      summary: 删除文档
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      responses:
+        '200': { description: OK }
+  /api/documents/{id}/versions:
+    post:
+      summary: 添加文档版本
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysDocumentVersionDTO'
+      responses:
+        '200': { description: 版本ID }
+    get:
+      summary: 列举文档所有版本
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 版本列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SysDocumentVersionVO'
+components:
+  schemas: {}
