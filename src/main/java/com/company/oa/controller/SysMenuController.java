@@ -2,6 +2,7 @@ package com.company.oa.controller;
 
 import com.company.oa.common.R;
 import com.company.oa.dto.SysMenuDTO;
+import com.company.oa.vo.MenuTreeVO;
 import com.company.oa.vo.SysMenuVO;
 import com.company.oa.service.SysMenuService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/menus")
@@ -50,5 +52,11 @@ public class SysMenuController {
     public R<Void> delete(@PathVariable Long id) {
         menuService.deleteMenu(id);
         return R.ok();
+    }
+
+    @GetMapping("/tree/{userId}")
+    public R<List<MenuTreeVO>> getUserMenuTree(@PathVariable Long userId) {
+        List<MenuTreeVO> tree = menuService.getMenuTreeByUserId(userId);
+        return R.ok(tree);
     }
 }

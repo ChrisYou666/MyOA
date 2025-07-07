@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.oa.dto.SysMenuDTO;
 import com.company.oa.entity.SysMenu;
+import com.company.oa.vo.MenuTreeVO;
 import com.company.oa.vo.SysMenuVO;
+
+import java.util.List;
 
 public interface SysMenuService extends IService<SysMenu> {
     Page<SysMenuVO> pageMenus(int page, int size);
@@ -13,4 +16,5 @@ public interface SysMenuService extends IService<SysMenu> {
     void createMenu(SysMenuDTO dto);
     void updateMenu(Long id, SysMenuDTO dto);
     void deleteMenu(Long id);
+    List<MenuTreeVO> getMenuTreeByUserId(Long userId);
 }

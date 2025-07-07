@@ -56,3 +56,23 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+ruoyi:
+  # 名称
+  name: RuoYi
+  # 版本
+  version: 3.8.4
+  # 版权年份
+  copyrightYear: 2022
+  # 实例演示开关
+  demoEnabled: true
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: D:/ruoyi/uploadPath
+  # 获取ip地址开关
+  addressEnabled: false
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+jwt:
+  # 用一个足够长的 Base64 字符串作为 HS256 对称密钥（建议至少 256 位，即 32 字节）
+  secret: q1h3rP2mV9bY6xL0Z7nU4sT8wJ5eF3gK2dS1vN9tR0pQ7oM  # 示例，请自行生成并 Base64 编码
+  # 过期时长，单位毫秒（这里示例 8 小时）
+  expiration-ms: 28800000

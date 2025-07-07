@@ -30,11 +30,15 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http
+                // 1. 从 HttpSecurity 中拿到共享的 AuthenticationManagerBuilder
                 .getSharedObject(AuthenticationManagerBuilder.class)
+                // 2. 配置用哪个 UserDetailsService 来加载用户与角色信息
                 .userDetailsService(userDetailsSvc)
-                // 不使用加密，直接明文比对
+                // 3. 配置密码比对方式：这里不做加密，直接用明文比对
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
+                // 4. 返回到 http 流水线，准备构建 AuthenticationManager
                 .and()
+                // 5. 构建并返回一个 AuthenticationManager 实例
                 .build();
     }
 
